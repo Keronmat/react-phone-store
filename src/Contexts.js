@@ -104,7 +104,7 @@ export default class ProductProvider extends Component {
     product.count = product.count - 1;
 
     if (product.count === 0) {
-      return this.removeItem(id);
+      this.removeItem(id);
     } else {
       product.total = product.count * product.price;
     }
