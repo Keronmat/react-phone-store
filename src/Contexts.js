@@ -75,13 +75,49 @@ export default class ProductProvider extends Component {
   };
 
   increment = id => {
-    console.log("this is increment method");
+    let tempCart = [...this.state.cart];
+
+    const selectedPoduct = tempCart.find(item => item.id === id);
+    const index = tempCart.indexOf(selectedPoduct);
+    const product = tempCart[index];
+
+    product.count = product.count + 1;
+    product.total = product.count * product.price;
+
+    this.setState(
+      () => {
+        return { cart: [...tempCart] };
+      },
+      () => {
+        this.addtotals();
+      }
+    );
   };
 
   decrement = id => {
-    console.log("this is decrement method");
-  };
+    let tempCart = [...this.state.cart];
 
+    const selectedPoduct = tempCart.find(item => item.id === id);
+    const index = tempCart.indexOf(selectedPoduct);
+    const product = tempCart[index];
+
+    product.count = product.count - 1;
+
+    if (product.count === 0) {
+      return this.removeItem(id);
+    } else {
+      product.total = product.count * product.price;
+    }
+
+    this.setState(
+      () => {
+        return { cart: [...tempCart] };
+      },
+      () => {
+        this.addtotals();
+      }
+    );
+  };
   removeItem = id => {
     let tempProducts = [...this.state.products];
     let tempCart = [...this.state.cart];
@@ -106,6 +142,7 @@ export default class ProductProvider extends Component {
       }
     );
   };
+
   clearCart = () => {
     this.setState(
       () => {
